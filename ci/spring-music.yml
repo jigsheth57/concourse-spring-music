@@ -1,10 +1,9 @@
+---
 resources:
 - name: music-repo
   type: git
   source:
-    uri: git@github.com:jigsheth57/concourse-spring-music.git
-    branch: master
-    private_key: {{git_private_key}}
+    uri: https://github.com/jigsheth57/concourse-spring-music.git
 
 - name: version
   type: semver
@@ -24,18 +23,20 @@ resources:
     secret_access_key: {{s3-secret-access-key}}
 
 jobs:
-- name: unit
+- name: unit-test
+  public: true
   plan:
   - get: music-repo
     trigger: true
-  - task: unit
+  - task: unit-test
     file: music-repo/ci/tasks/unit.yml
 
-- name: build-binary
+- name: build-war
+  public: true
   serial: true
   plan:
   - get: music-repo
-    passed: [unit]
+    passed: [unit-test]
     trigger: true
   - get: version
     params: {bump: patch}
@@ -49,4 +50,4 @@ jobs:
   - put: version
     params: {file: version/number}
   - put: music-release
-    params: {file: build-artifact/build/libs/spring-music-*.war}
+    params: {file: build-artifact/spring-music-*.war}

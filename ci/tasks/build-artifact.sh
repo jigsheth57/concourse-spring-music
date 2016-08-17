@@ -8,3 +8,5 @@ echo $version
 gradle assemble -PVersion=$version
 pwd
 ls -laF build/libs/*.war
+cp build/libs/*.war build-artifact
+ls -laF build-artifact
