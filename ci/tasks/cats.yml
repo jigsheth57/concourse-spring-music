@@ -1,7 +1,9 @@
 ---
 platform: linux
 
-image: docker:///datianshi/cf-cli
+image_resource:
+  type: docker-image
+  source: {repository: datianshi/cf-cli}
 
 inputs:
   - name: music-repo
