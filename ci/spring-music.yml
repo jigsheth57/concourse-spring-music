@@ -42,11 +42,11 @@ jobs:
   - task: build-artifact
     file: music-repo/ci/tasks/build-artifact.yml
     timeout: 5m
-  - put: music-release
-    params: {file: music-repo/build/libs/spring-music-*.war}
   - put: music-repo
     params:
       repository: music-repo
       tag: version/number
   - put: version
     params: {file: version/number}
+  - put: music-release
+    params: {file: music-repo/build/libs/*.war}
