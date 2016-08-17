@@ -41,7 +41,7 @@ jobs:
     params: {bump: patch}
   - task: build-artifact
     file: music-repo/ci/tasks/build-artifact.yml
-    timeout: 10m
+    timeout: 5m
   - put: music-repo
     params:
       repository: music-repo
