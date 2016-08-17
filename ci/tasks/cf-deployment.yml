@@ -11,9 +11,9 @@ run:
   path: music-repo/ci/tasks/cf-deployment.sh
 
 params:
-  API_ENDPOINT:
-  USERNAME:
-  PASSWORD:
-  ORG:
-  SPACE:
-  MUSIC_APP_NAME:
+  API_ENDPOINT: api.run.pivotal.io
+  USERNAME: {{pcf-userid}}
+  PASSWORD: {{pcf-password}}
+  ORG: Central
+  SPACE: development
+  MUSIC_APP_NAME: music-ci-20160816

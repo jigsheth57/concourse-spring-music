@@ -62,14 +62,6 @@ jobs:
       trigger: true
   - task: deploy-to-cats
     file: music-repo/ci/tasks/cf-deployment.yml
-    config:
-      params:
-        API_ENDPOINT: api.run.pivotal.io
-        USERNAME: {{pcf-userid}}
-        PASSWORD: {{pcf-password}}
-        ORG: Central
-        SPACE: development
-        MUSIC_APP_NAME: music-ci-20160816
   - task: cats
     file: music-repo/ci/tasks/cats.yml
     config:
@@ -87,14 +79,6 @@ jobs:
       trigger: true
   - task: deploy-to-uat
     file: music-repo/ci/tasks/cf-deployment.yml
-    config:
-      params:
-        API_ENDPOINT: api.run.pivotal.io
-        USERNAME: {{pcf-userid}}
-        PASSWORD: {{pcf-password}}
-        ORG: Central
-        SPACE: staging
-        MUSIC_APP_NAME: music-ci-20160816
 
 - name: manual-deploy-to-prod
   serial: true
@@ -106,11 +90,3 @@ jobs:
       passed: [promote-to-uat]
   - task: deploy-to-prod
     file: music-repo/ci/tasks/cf-deployment.yml
-    config:
-      params:
-        API_ENDPOINT: api.run.pivotal.io
-        USERNAME: {{pcf-userid}}
-        PASSWORD: {{pcf-password}}
-        ORG: Central
-        SPACE: production
-        MUSIC_APP_NAME: music-ci-20160816
