@@ -10,4 +10,4 @@ run:
   path: music-repo/ci/tasks/cats.sh
 
 params:
-  MUSIC_URL:
+  MUSIC_APP_NAME:

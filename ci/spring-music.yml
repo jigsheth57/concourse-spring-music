@@ -2,14 +2,14 @@ resources:
 - name: music-repo
   type: git
   source:
-    uri: git@github.com:datianshi/spring-music.git
+    uri: git@github.com:jigsheth57/concourse-spring-music.git
     branch: master
-    private_key: {{music_private_key}}
+    private_key: {{git_private_key}}
 
 - name: version
   type: semver
   source:
-    bucket: music-pipeline-artifacts
+    bucket: ci-spring-music-artifacts
     key: current-version
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
@@ -18,7 +18,7 @@ resources:
 - name: music-release
   type: s3
   source:
-    bucket: music-pipeline-artifacts
+    bucket: ci-spring-music-artifacts
     regexp: spring-music-(.*).war
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
@@ -64,17 +64,17 @@ jobs:
     file: music-repo/ci/tasks/cf-deployment.yml
     config:
       params:
-        API_ENDPOINT: api.10.65.233.228.xip.io
-        USERNAME: admin
-        PASSWORD: admin
-        ORG: test-org
-        SPACE: cats
-        HOST: music-cats
+        API_ENDPOINT: api.run.pivotal.io
+        USERNAME: {{pcf-userid}}
+        PASSWORD: {{pcf-password}}
+        ORG: Central
+        SPACE: development
+        MUSIC_APP_NAME: music-ci-20160816
   - task: cats
     file: music-repo/ci/tasks/cats.yml
     config:
       params:
-        MUSIC_URL: http://music-cats.10.65.233.228.xip.io
+        MUSIC_APP_NAME: music-ci-20160816
 
 - name: promote-to-uat
   plan:
@@ -89,12 +89,12 @@ jobs:
     file: music-repo/ci/tasks/cf-deployment.yml
     config:
       params:
-        API_ENDPOINT: api.10.65.233.228.xip.io
-        USERNAME: admin
-        PASSWORD: admin
-        ORG: test-org
-        SPACE: uat
-        HOST: music-uat
+        API_ENDPOINT: api.run.pivotal.io
+        USERNAME: {{pcf-userid}}
+        PASSWORD: {{pcf-password}}
+        ORG: Central
+        SPACE: staging
+        MUSIC_APP_NAME: music-ci-20160816
 
 - name: manual-deploy-to-prod
   serial: true
@@ -108,9 +108,9 @@ jobs:
     file: music-repo/ci/tasks/cf-deployment.yml
     config:
       params:
-        API_ENDPOINT: api.10.65.233.228.xip.io
-        USERNAME: admin
-        PASSWORD: admin
-        ORG: test-org
-        SPACE: prod
-        HOST: music
+        API_ENDPOINT: api.run.pivotal.io
+        USERNAME: {{pcf-userid}}
+        PASSWORD: {{pcf-password}}
+        ORG: Central
+        SPACE: production
+        MUSIC_APP_NAME: music-ci-20160816

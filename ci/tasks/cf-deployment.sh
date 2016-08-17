@@ -15,6 +15,6 @@ org_space="cf target -o $ORG -s $SPACE"
 eval $org_space
 
 echo "push the app"
-push="cf push music -n $HOST -p music-release/spring-music-*.war -m 512m"
+push="cf push $MUSIC_APP_NAME -p music-release/spring-music-*.war -m 512m --random-route"
 #echo $push
 eval $push
