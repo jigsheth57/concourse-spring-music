@@ -3,7 +3,9 @@ resources:
 - name: music-repo
   type: git
   source:
-    uri: https://github.com/jigsheth57/concourse-spring-music.git
+    uri: git@github.com:jigsheth57/concourse-spring-music.git
+    branch: master
+    private_key: {{git_private_key}}
 
 - name: version
   type: semver
@@ -43,11 +45,11 @@ jobs:
   - task: build-artifact
     file: music-repo/ci/tasks/build-artifact.yml
     timeout: 5m
+  - put: music-release
+    params: {file: build-artifact/spring-music-*.war}
   - put: music-repo
     params:
       repository: music-repo
       tag: version/number
   - put: version
     params: {file: version/number}
-  - put: music-release
-    params: {file: build-artifact/spring-music-*.war}
