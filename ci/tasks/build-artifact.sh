@@ -7,6 +7,7 @@ cd music-repo
 echo $version
 gradle assemble -PVersion=$version
 pwd
-ls
-ls build/libs/
+ls -laF build/libs/
 cp build/libs/*.war .
+pwd
+ls -laF
