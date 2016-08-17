@@ -49,4 +49,4 @@ jobs:
   - put: version
     params: {file: version/number}
   - put: music-release
-    params: {file: music-repo/build/libs/*.war}
+    params: {file: build-artifact/build/libs/spring-music-*.war}
