@@ -3,9 +3,7 @@ platform: linux
 
 image_resource:
   type: docker-image
-  source:
-    repository: datianshi
-    tag: 'gradle'
+  source: {repository: datianshi/gradle}
 
 inputs:
   - name: music-repo
