@@ -78,3 +78,31 @@ jobs:
       space: development
       manifest: music-repo/ci/manifest.yml
       path: music-release/spring-music-*.war
+
+- name: promote-to-staging
+  plan:
+  - aggregate:
+    - get: music-release
+      passed: [acceptance-tests]
+      trigger: true
+    - get: music-repo
+      passed: [acceptance-tests]
+      trigger: true
+  - put: resource-deploy-music-app
+    params:
+      space: staging
+      manifest: music-repo/ci/manifest.yml
+      path: music-release/spring-music-*.war
+
+- name: manual-deploy-to-prod
+  plan:
+  - aggregate:
+    - get: music-release
+      passed: [promote-to-staging]
+    - get: music-repo
+      passed: [promote-to-staging]
+  - put: resource-deploy-music-app
+    params:
+      space: production
+      manifest: music-repo/ci/manifest.yml
+      path: music-release/spring-music-*.war
