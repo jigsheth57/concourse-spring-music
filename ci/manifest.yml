@@ -1,0 +1,6 @@
+---
+applications:
+- name: music-ci-20160816
+  memory: 512M
+  instances: 1
+  random-route: true

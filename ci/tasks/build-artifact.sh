@@ -3,6 +3,8 @@ set -e
 
 export GRADLE_OPTS=-Dorg.gradle.native=false
 version=`cat version/number`
+ls -laF
+ls -laf version
 cd music-repo
 echo $version
 gradle assemble -PVersion=$version

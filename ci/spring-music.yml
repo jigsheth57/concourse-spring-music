@@ -24,6 +24,16 @@ resources:
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
 
+- name: resource-deploy-music-app
+  type: cf
+  source:
+    api: {{cf-api}}
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-organization}}
+    space: {{cf-space}}
+    skip_cert_check: true
+
 jobs:
 - name: unit-test
   public: true
@@ -33,7 +43,7 @@ jobs:
   - task: unit-test
     file: music-repo/ci/tasks/unit.yml
 
-- name: build-war
+- name: build-binary
   public: true
   serial: true
   plan:
@@ -53,3 +63,18 @@ jobs:
       tag: version/number
   - put: version
     params: {file: version/number}
+
+- name: acceptance-tests
+  plan:
+  - aggregate:
+    - get: music-release
+      passed: [build-binary]
+      trigger: true
+    - get: music-repo
+      passed: [build-binary]
+      trigger: true
+  - put: resource-deploy-music-app
+    params:
+      space: development
+      manifest: music-repo/ci/manifest.yml
+      path: music-release/spring-music-*.war
